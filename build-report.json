@@ -1,0 +1,53 @@
+{
+ "workflow": {
+  "entries": 115,
+  "dup_rows_skipped": 0,
+  "matched_to_reels": 82,
+  "unmatched_no_reel_record": 33
+ },
+ "agents": {
+  "entries": 54,
+  "dup_rows_skipped": 0,
+  "matched_to_reels": 44,
+  "unmatched_no_reel_record": 10
+ },
+ "business": {
+  "entries": 91,
+  "dup_rows_skipped": 0,
+  "unclustered": 1,
+  "matched_to_reels": 79,
+  "unmatched_no_reel_record": 12
+ },
+ "fitness": {
+  "entries": 69,
+  "dup_rows_skipped": 0,
+  "unclustered": 0,
+  "matched_to_reels": 49,
+  "unmatched_no_reel_record": 20
+ },
+ "video": {
+  "entries": 38,
+  "matched_to_reels": 30,
+  "unmatched_no_reel_record": 8
+ },
+ "security": {
+  "entries": 63
+ },
+ "polish": {
+  "entries": 47
+ },
+ "reels": {
+  "rows_read": 6024,
+  "by_source": {
+   "batch": 5923,
+   "pilot": 50,
+   "seed": 51
+  },
+  "dup_media_id_skipped": 51,
+  "dup_url_skipped": 0,
+  "indexed": 5973,
+  "unfiled_collection_null": 1205,
+  "missing_media_id": 1,
+  "with_inventory_cluster": 264
+ }
+}
