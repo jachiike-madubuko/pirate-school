@@ -2,7 +2,7 @@
    Data lives in data/reels.json and data/curricula.json. Progress lives in
    localStorage on this device only. Search covers creator, collection, note,
    and inventory cluster — there are no transcripts yet, so no transcript search.
-   Routes (hash): #/library, #/curricula, #/curriculum/<id>, #/about. */
+   Routes (hash): #/home (default), #/library, #/curricula, #/curriculum/<id>, #/about. */
 (function () {
   "use strict";
   var app = document.getElementById("app");
@@ -243,14 +243,12 @@
     appendNext();
   }
 
-  /* ---------------- curricula ---------------- */
-  function curriculaView() {
+  /* ---------------- home + curricula (shared bento) ---------------- */
+  /* The bento grid (progress summary + one card per domain) is the front
+     door on Home and the full list on Curricula — one builder, used twice. */
+  function bentoHTML() {
     var ov = overallProgress();
-    var html = '<div class="view"><h2>Curricula</h2>' +
-      '<p class="sub">One curriculum per domain. Modules are the inventory clusters, in order. ' +
-      "Progress is stored on this device only.</p>" +
-      '<div class="notice">🎓 <strong>Quizzes aren’t built yet.</strong> Each module shows where a mastery check (default 80% pass) will gate the next one. For now, mark a module done when you’ve worked through its reels.</div>' +
-      '<div class="bento">' +
+    var html = '<div class="bento">' +
       '<article class="card summary-tile"><div class="summary-body">' +
       ringSVG(ov.pct, "#ffd93b", "lg") +
       "<div><h3>Your progress</h3><p>" + ov.done + " of " + ov.total + " modules done · " + ov.items + " items across " + domains().length + " domains</p></div>" +
@@ -268,7 +266,22 @@
         '<div class="domcard-foot"><span class="proglabel">' + done + " / " + total + " modules · " + items + ' items</span>' +
         '<span class="cta">' + (done === total && total ? "Complete ✓" : done ? "Continue →" : "Start →") + "</span></div></a>";
     }).join("");
-    return html + "</div></div>";
+    return html + "</div>";
+  }
+
+  function homeView() {
+    return '<div class="view"><h2>Pick a domain</h2>' +
+      '<p class="sub">One curriculum per domain — pick one and work through its modules, in order. ' +
+      "Progress is stored on this device only.</p>" +
+      bentoHTML() + "</div>";
+  }
+
+  function curriculaView() {
+    return '<div class="view"><h2>Curricula</h2>' +
+      '<p class="sub">One curriculum per domain. Modules are the inventory clusters, in order. ' +
+      "Progress is stored on this device only.</p>" +
+      '<div class="notice">🎓 <strong>Quizzes aren’t built yet.</strong> Each module shows where a mastery check (default 80% pass) will gate the next one. For now, mark a module done when you’ve worked through its reels.</div>' +
+      bentoHTML() + "</div>";
   }
 
   function curriculumView(d) {
@@ -330,6 +343,7 @@
 
   function paletteActions() {
     return [
+      { label: "Go to Home", sub: "Hero stats, spotlight, and the 8 domains", action: "home" },
       { label: "Go to Library", sub: "Browse all 5,973 saved reels", action: "library" },
       { label: "Go to Curricula", sub: "8 domains, 626 items", action: "curricula" },
       { label: "Go to About", sub: "What’s in here, and what’s next", action: "about" },
@@ -398,21 +412,22 @@
   /* ---------------- router ---------------- */
   function render(preserveScroll) {
     var y = preserveScroll ? window.scrollY : 0;
-    var hash = location.hash || "#/library";
+    var hash = location.hash || "#/home";
     var parts = hash.replace(/^#\//, "").split("/");
-    var view = parts[0] || "library";
-    ["library", "curricula", "about"].forEach(function (t) {
+    var view = parts[0] || "home";
+    if (["home", "library", "curricula", "curriculum", "about"].indexOf(view) === -1) view = "home";
+    ["home", "library", "curricula", "about"].forEach(function (t) {
       ["tab-", "btab-"].forEach(function (p) {
         var el = document.getElementById(p + t);
         if (el) el.setAttribute("aria-current", t === view || (t === "curricula" && view === "curriculum") ? "page" : "false");
       });
     });
-    hero.hidden = view !== "library";
+    hero.hidden = view !== "home";
     var html;
     if (loadError) {
       html = '<p class="empty">The library data failed to load. Check your connection and reload.</p>';
     } else if (!reels) {
-      html = '<div class="skeleton-wrap" aria-hidden="true"><div class="sk sk-search"></div><div class="sk sk-chiprow"></div><div class="sk sk-card"></div><div class="sk sk-card"></div><div class="sk sk-card"></div></div><p class="loading">Loading the library…</p>';
+      html = '<div class="skeleton-wrap" aria-hidden="true"><div class="sk sk-search"></div><div class="sk sk-chiprow"></div><div class="sk sk-card"></div><div class="sk sk-card"></div><div class="sk sk-card"></div></div><p class="loading">Loading Pirate School…</p>';
     } else if (view === "curricula") {
       html = curriculaView();
     } else if (view === "curriculum" && parts[1]) {
@@ -420,8 +435,10 @@
       html = d ? curriculumView(d) : '<p class="empty">Unknown curriculum. <a href="#/curricula">Back to curricula</a></p>';
     } else if (view === "about") {
       html = aboutView();
-    } else {
+    } else if (view === "library") {
       html = libraryShell();
+    } else {
+      html = homeView();
     }
     app.innerHTML = html;
     if (view === "library" && reels) refreshResults();
