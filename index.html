@@ -4,32 +4,87 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Pirate School — a searchable library and mastery-gated curriculum built from saved Instagram reels.">
+<meta name="theme-color" content="#0f0e17">
 <title>Pirate School — Searchable Reel Library &amp; Curricula</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<a class="skip" href="#app">Skip to content</a>
+
 <header class="topbar">
-  <div class="wrap">
-    <h1>🏴‍☠️ Pirate School</h1>
-    <p class="tagline">Your saved reels, turned into a searchable library and a school.</p>
+  <div class="wrap topbar-row">
+    <a class="brand" href="#/library" aria-label="Pirate School — home">
+      <span class="brand-mark" aria-hidden="true">🏴‍☠️</span>
+      <span class="brand-text">Pirate <em>School</em></span>
+      <span class="brand-pill">MVP</span>
+    </a>
+    <nav class="tabs tabs-desktop" aria-label="Main">
+      <a href="#/library" id="tab-library" class="tab" aria-current="page">📚 Library</a>
+      <a href="#/curricula" id="tab-curricula" class="tab">🎓 Curricula</a>
+      <a href="#/about" id="tab-about" class="tab">ℹ️ About</a>
+    </nav>
+    <button class="cmdk-btn" id="palette-open" type="button" aria-label="Open search (Command K)">
+      <span aria-hidden="true">⌕</span><span class="cmdk-label">Search</span>
+      <kbd aria-hidden="true">⌘K</kbd>
+    </button>
   </div>
 </header>
 
-<nav class="tabs" aria-label="Main">
-  <div class="wrap tabs-row">
-    <a href="#/library" id="tab-library" class="tab" aria-current="page">📚 Library</a>
-    <a href="#/curricula" id="tab-curricula" class="tab">🎓 Curricula</a>
-    <a href="#/about" id="tab-about" class="tab">ℹ️ About</a>
+<section class="hero wrap" id="hero" aria-label="Pirate School overview">
+  <p class="eyebrow">Your saved reels, turned into a school</p>
+  <h1>Learn from <span class="grad">everything you saved.</span></h1>
+  <p class="tagline">A searchable library and a mastery-gated curriculum, built from your Instagram saves. Search what’s in them — then work through them, module by module.</p>
+  <dl class="stats" id="stats">
+    <div class="stat"><dt>Reels indexed</dt><dd id="stat-reels">—</dd></div>
+    <div class="stat"><dt>Curriculum items</dt><dd id="stat-items">—</dd></div>
+    <div class="stat"><dt>Domains</dt><dd id="stat-domains">—</dd></div>
+    <div class="stat"><dt>Collections</dt><dd id="stat-collections">—</dd></div>
+  </dl>
+  <div class="spotlight" id="spotlight" aria-live="polite">
+    <p class="spotlight-label">🎲 Random reel — feeling lucky?</p>
+    <p class="spotlight-loading">Picking a reel…</p>
   </div>
-</nav>
+</section>
 
 <main class="wrap" id="app" aria-live="polite">
+  <div class="skeleton-wrap" aria-hidden="true">
+    <div class="sk sk-search"></div>
+    <div class="sk sk-chiprow"></div>
+    <div class="sk sk-card"></div>
+    <div class="sk sk-card"></div>
+    <div class="sk sk-card"></div>
+  </div>
   <p class="loading">Loading the library…</p>
 </main>
 
 <footer class="wrap foot">
   <p>Pirate School MVP — Layers 0–2. Search covers creator, collection, notes and inventory clusters. <strong>No transcript search yet</strong> (no transcripts exist at scale). Quizzes are not built yet — modules show where a mastery check will gate. Videos are not hosted here; every reel links out to Instagram.</p>
 </footer>
+
+<nav class="bottomnav" aria-label="Main">
+  <a href="#/library" id="btab-library" class="btab" aria-current="page"><span aria-hidden="true">📚</span>Library</a>
+  <a href="#/curricula" id="btab-curricula" class="btab"><span aria-hidden="true">🎓</span>Curricula</a>
+  <a href="#/about" id="btab-about" class="btab"><span aria-hidden="true">ℹ️</span>About</a>
+  <button class="btab" id="palette-open-mobile" type="button" aria-label="Open search"><span aria-hidden="true">⌕</span>Search</button>
+</nav>
+
+<div class="palette" id="palette" hidden>
+  <div class="palette-backdrop" id="palette-backdrop"></div>
+  <div class="palette-dialog" role="dialog" aria-modal="true" aria-label="Search the library">
+    <div class="palette-bar">
+      <span aria-hidden="true">⌕</span>
+      <input type="search" id="palette-input" placeholder="Search creator, collection, note, cluster…" autocomplete="off" aria-label="Search the library" role="combobox" aria-expanded="true" aria-controls="palette-results" aria-activedescendant="">
+      <button class="palette-esc" id="palette-close" type="button" aria-label="Close search">esc</button>
+    </div>
+    <ul class="palette-results" id="palette-results" role="listbox" aria-label="Search results"></ul>
+    <div class="palette-foot">
+      <span><kbd>↑↓</kbd> navigate</span>
+      <span><kbd>↵</kbd> open</span>
+      <span><kbd>esc</kbd> close</span>
+      <span class="palette-scope">Search covers creator, collection, notes and clusters — not transcripts (none exist yet).</span>
+    </div>
+  </div>
+</div>
 
 <script src="app.js"></script>
 </body>
