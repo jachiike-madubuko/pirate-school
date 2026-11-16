@@ -432,3 +432,14 @@ h2 { font-size: 24px; margin: 22px 0 6px; letter-spacing: -0.01em; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* ---------- GridScan background ---------- */
+/* When the WebGL background mounts (html.gridscan-on), the page background
+   goes transparent so the fixed grid shows through, and the in-flow content
+   sits above it. Without the class (WebGL2 unavailable) the solid gradient
+   background stays. Topbar / bottom nav / palette already sit above it on
+   their own z-indexes. */
+html.gridscan-on body { background: transparent; }
+html.gridscan-on .hero,
+html.gridscan-on main,
+html.gridscan-on .foot { position: relative; z-index: 1; }

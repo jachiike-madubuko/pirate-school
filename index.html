@@ -7,8 +7,10 @@
 <meta name="theme-color" content="#0f0e17">
 <title>Pirate School — Searchable Reel Library &amp; Curricula</title>
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="gridscan.css">
 </head>
 <body>
+<div class="grid-scan-bg" id="gridscan" aria-hidden="true"></div>
 <a class="skip" href="#app">Skip to content</a>
 
 <header class="topbar">
@@ -88,6 +90,33 @@
   </div>
 </div>
 
+<script src="gridscan.js"></script>
+<script>
+  /* GridScan background — mounts once on load, with the props from the
+     React Bits usage example. If WebGL2 is unavailable the container is
+     removed and the page keeps its solid background. */
+  (function () {
+    var el = document.getElementById("gridscan");
+    if (!el || typeof window.initGridScan !== "function") return;
+    var destroy = window.initGridScan(el, {
+      linesColor: "#4d4757",
+      scanColor: "#ff453a",
+      cells: 14,
+      depth: 3,
+      scanDuration: 2.4,
+      scanDelay: 1.6,
+      clickEffect: "ping",
+      parallax: 1.3,
+      reflection: 0.55,
+      scanWidth: 1.9,
+      trail: 0.52,
+      glow: 0.87,
+      points: false
+    });
+    if (destroy) document.documentElement.classList.add("gridscan-on");
+    else el.remove();
+  })();
+</script>
 <script src="app.js"></script>
 </body>
 </html>

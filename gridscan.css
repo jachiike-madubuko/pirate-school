@@ -1,0 +1,30 @@
+/* GridScan background — fixed full-viewport WebGL canvas behind the app.
+   The container carries the dark base color; the canvas draws the 3D grid
+   room over it. pointer-events: none throughout, so every click still
+   reaches the app controls — and the grid's own window-level ping handler,
+   which fires on any click anywhere in the viewport.
+   The ::after tint keeps text readable over the bright red scan line. */
+.grid-scan-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: #0f0e17;
+  pointer-events: none;
+}
+
+.grid-scan-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(15, 14, 23, 0.45), rgba(15, 14, 23, 0.28) 40%, rgba(15, 14, 23, 0.4));
+  pointer-events: none;
+}
+
+.grid-scan-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
